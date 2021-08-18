@@ -1,26 +1,16 @@
 from django.shortcuts import render, redirect
-from .forms import BioForm, SkillsForm
-from .models import Bio
+from .forms import ContactForm
+from .models import Contact
+from django.contrib import messages
 # Create your views here.
 
 def index(request):
   if request.method == "POST":
-    form = BioForm(request.POST)
+    form = ContactForm(request.POST)
     if form.is_valid():
       form.save()
-      print("Form saved..")
+      messages.success(request, "Message Sent...")
       return redirect("index")
-  form = BioForm()
+  form = ContactForm()
   context = {"form" : form}
   return render(request, "resume/index.html", context )
-
-def add_skills(request):
-  if request.method == "POST":
-    form = SkillsForm(request.POST)
-    if form.is_valid():
-      form.save()
-      print("Saved...")
-      return redirect("/")
-  form = SkillsForm()
-  context = {"form" : form}
-  return render(request, "resume/sample.html", context)
